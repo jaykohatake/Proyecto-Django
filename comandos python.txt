@@ -1,0 +1,18 @@
+python manage.py runserver
+
+python manage.py migrate
+
+python manage.py makemigrations
+
+
+para cagar los mapas
+
+python manage.py shell
+
+--para cargar el poligono
+from SIRICWEB import load_layer
+load_layer.run()
+
+--para cargar los centroides
+from SIRICWEB import load_centroides
+load_centroides.run()

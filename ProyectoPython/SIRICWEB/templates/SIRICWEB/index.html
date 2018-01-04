@@ -1,0 +1,178 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div id="page-wrapper">
+        <br/>
+        <div class="row">
+             <div class="col-lg-12 col-md-12 col-xs-12">
+                <div class="middle-tox text-center loginscreen animated fadeInDown">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-lg-10 col-md-10 col-xs-10 col-md-offset-1">
+                                    <h1 class="page-header"> <i class="fa fa-leaf fa-2x"></i> Sistema de Información de Riego a Cultivos</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if user.profile.role == 1 or user.profile.role == 5 or user.profile.role == 6 %}
+         <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            Riegos pendientes
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-predio">
+
+                                <thead>
+                                    <tr>
+                                        <th>Predio</th>
+                                        <th>Canal</th>
+                                        <th>Metodo</th>
+                                        <th>Cultivo</th>
+                                        <th>F. incio</th>
+                                        <th>H. inicio</th>
+                                        <th>F. fin</th>
+                                        <th>H. fin</th>
+                                        <th>Dotación inicial(L/s)</th>
+                                        <th>Duración</th>
+                                        <th>Vol de agua (m<sup>3</sup>)</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for predioRiegoPendiente in predioRiegoPendiente %}
+                                        <tr>
+                                            <td>{{predioRiegoPendiente.codigo_predio_id}}</td>
+                                            <td>{{predioRiegoPendiente.id_canal}}</td>
+                                            <td>{{predioRiegoPendiente.id_metodoRiego.nombre_metodoriego}}</td>
+                                            <td>{{predioRiegoPendiente.id_cultivo.nombre_cultivo}}</td>
+                                            <td>{{predioRiegoPendiente.fecha_inicio|date:"d-m-Y"}}</td>
+                                            <td>{{predioRiegoPendiente.hora_inicio}}</td>
+                                            <td>{{predioRiegoPendiente.fecha_final|date:"d-m-Y"}}</td>
+                                            <td>{{predioRiegoPendiente.hore_final|default_if_none:""}}</td>  
+                                            <td>{{predioRiegoPendiente.dotacion_inicial}}</td>
+                                            <td>{{predioRiegoPendiente.duracion_riego|default_if_none:""}}</td>
+                                            <td>{{predioRiegoPendiente.volumen_agua|default_if_none:""}}</td>
+                                             <td>
+                                               <a href="{% url 'modificarRegistroRiego' predioRiegoPendiente.id  %}" class="btn btn-warning btn-xs">Cerrar Riego</a>
+                                            </td>
+                                        </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        <!-- /.row -->
+         <div class="panel panel-info">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> Riego mensual por predio
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        <div id="morris-bar-chart2"></div>
+                    </div>
+                    <!-- /.col-lg-8 (nested) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+        {% endif %}
+    </div>
+    <!-- /#page-wrapper -->
+
+     <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/raphael/raphael.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/morrisjs/morris.min.js" %}"></script>
+
+         <!-- DataTables JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables/js/jquery.dataTables.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-responsive/dataTables.responsive.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+        <script type="text/javascript">
+
+        $(function() {
+             Morris.Bar({
+                element: 'morris-bar-chart2',
+                data: [
+                {% for item in result %}
+                    { y:'{{item.codigo_predio.nombre_predio}} {{item.fecha_inicio|date:"Y-m"}}',volumen_agua: '{{item.volumen_agua}}'}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+                ],
+                xkey: 'y',
+                ykeys: [ 'volumen_agua'],
+                labels: [ 'Total de Volumen de Agua (m<sup>3</sup>)'],
+                hideHover: 'auto',
+                resize: true
+            });
+                });
+
+         $(document).ready(function() {
+
+        var idioma_espanol = {
+        "sProcessing":     "Procesando...",
+        "sLengthMenu":     "Mostrar _MENU_ registros",
+        "sZeroRecords":    "No se encontraron resultados",
+        "sEmptyTable":     "Ningún dato disponible en esta tabla",
+        "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix":    "",
+        "sSearch":         "Buscar: ",
+        "sUrl":            "",
+        "sInfoThousands":  ",",
+        "sLoadingRecords": "Cargando...",
+        "oPaginate": {
+            "sFirst":    "Primero",
+            "sLast":     "Último",
+            "sNext":     "Siguiente",
+            "sPrevious": "Anterior"
+        },
+        "oAria": {
+            "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+        }    
+
+            $('#dataTables-predio').DataTable({
+                "language":  idioma_espanol,
+                stateSave: true,
+                responsive: true
+            });
+
+
+        });
+        </script>
+        <!-- /.row -->
+        
+{% endblock content %}
+

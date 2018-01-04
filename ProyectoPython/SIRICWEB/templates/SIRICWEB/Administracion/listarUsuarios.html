@@ -1,0 +1,148 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+     <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Usuarios</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+                <div class="col-md-8">
+                     <a href="{% url 'registrarUsuarios' %}" class="btn btn-success">
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i> Agregar nuevo usuario
+                    </a>
+                </div>
+        </div>
+        </br>
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-lg-12">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Usuarios registrados
+                            <a href="{% url 'index' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Apellido</th>
+                                        <th>Nombre de Usuario</th>
+                                        <th>Correo</th>
+                                        <th>Cargo</th>
+                                        <th>Activo</th>
+                                        <th>Rol</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for usuario in object_list %}
+                                        <tr>
+                                            <td>{{usuario.first_name}}</td>
+                                            <td>{{usuario.last_name}}</td>
+                                            <td>{{usuario.username}}</td>
+                                            <td>{{usuario.email}}</td>
+                                            <td>{{usuario.profile.cargo}}</td>
+                                            <td>
+                                                {% if usuario.is_active %}
+                                                    <p><span class="glyphicon glyphicon glyphicon-ok btn btn-success btn-xs"></span></p>
+                                                {%else%}
+                                                    <p><span class="glyphicon glyphicon glyphicon glyphicon-remove btn btn-danger btn-xs"></span></p>
+                                                {% endif %}
+                                            </td>
+                                            <td>{% if usuario.profile.role == 1 %}
+                                                    Administrador
+                                                {% elif usuario.profile.role == 2 %}
+                                                    Gerente
+                                                {% elif usuario.profile.role == 3 %}
+                                                    Tesorero
+                                                {% elif usuario.profile.role == 4 %}
+                                                    Revisor Fiscal
+                                                {% elif usuario.profile.role == 5 %}
+                                                    Inspector Zona
+                                                {% elif usuario.profile.role == 6 %}
+                                                    Supervisor
+                                                {% elif usuario.profile.role == 6 %}
+                                                    Consulta
+                                                {% endif %}
+                                            </td>     
+                                            <td>
+                                                <a href="{% url 'modificarUsuarios' usuario.id %}" class="btn btn-info">Editar</a>
+                                                <a href="{% url 'cambiarContrasena' usuario.id %}" class="btn btn-warning">Cambiar Contraseña</a>
+                                            </td>
+                                        </tr>
+                                    {%endfor%}
+                                </tbody>
+                            </table>
+                            <!-- /.table-responsive -->
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+        <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- DataTables JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables/js/jquery.dataTables.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-plugins/dataTables.bootstrap.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-responsive/dataTables.responsive.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+         <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+    <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+
+    var idioma_espanol = {
+    "sProcessing":     "Procesando...",
+    "sLengthMenu":     "Mostrar _MENU_ registros",
+    "sZeroRecords":    "No se encontraron resultados",
+    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+    "sInfoPostFix":    "",
+    "sSearch":         "Buscar: ",
+    "sUrl":            "",
+    "sInfoThousands":  ",",
+    "sLoadingRecords": "Cargando...",
+    "oPaginate": {
+        "sFirst":    "Primero",
+        "sLast":     "Último",
+        "sNext":     "Siguiente",
+        "sPrevious": "Anterior"
+    },
+    "oAria": {
+        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+    }
+    }    
+
+        $('#dataTables-example').DataTable({
+            "language":  idioma_espanol,
+            stateSave: true,
+            responsive: true
+        });
+
+
+    });
+    </script>
+
+{% endblock content %}

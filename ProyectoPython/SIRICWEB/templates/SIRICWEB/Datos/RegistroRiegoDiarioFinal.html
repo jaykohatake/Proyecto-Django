@@ -1,0 +1,307 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Registro de riegos pendeintes</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Datos de riego
+                         <a href="{% url 'listarRiegosDiarioPentientes' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" id="form" method="post" content='text/html; charset=UTF-8'>
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Error!</strong> {{ message }}.
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.codigo_predio.errors %}has-error{% endif %}">
+                                            <label>Código predio</label>
+                                            {{form.codigo_predio}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.id_canal.errors %}has-error{% endif %}">
+                                            <label>Canal</label>
+                                            {{form.id_canal}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.id_metodoRiego.errors %}has-error{% endif %}">
+                                            <label>Metodo de riego</label>
+                                            {{form.id_metodoRiego}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.id_cultivo.errors %}has-error{% endif %}">
+                                            <label>Tipo cultivo</label>
+                                            {{form.id_cultivo}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <div class="form-group {% if form.fecha_inicio.errors %}has-error{% endif %}">
+                                            <label>Fecha inicia</label>
+                                            {{form.fecha_inicio}}
+                                        </div>
+                                </div>
+                                 <div class="col-md-4">
+                                        <div class="form-group {% if form.hora_inicio.errors %}has-error{% endif %}">
+                                            <label>Hora inicia</label>
+                                            {{form.hora_inicio}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <div class="form-group {% if form.fecha_final.errors %}has-error{% endif %}">
+                                            <label>Fecha termina</label>
+                                            {{form.fecha_final}}
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                        <div class="form-group {% if form.hore_final.errors %}has-error{% endif %}">
+                                            <label>Hora termina</label>
+                                            {{form.hore_final}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.dotacion_inicial.errors %}has-error{% endif %}">
+                                            <label>Dotación inicial L/s</label>
+                                            {{form.dotacion_inicial}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                             <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.dotacion_final.errors %}has-error{% endif %}">
+                                            <label>Dotación final L/s</label>
+                                            {{form.dotacion_final}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            {% if user.profile.role == 1 %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.duracion_riego.errors %}has-error{% endif %}">
+                                            <label>Duración de riego</label>
+                                            {{form.duracion_riego}}
+                                            <div class="text-muted pull-right">
+                                                <small>{{form.duracion_riego.help_text}}</small>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.volumen_agua.errors %}has-error{% endif %}">
+                                            <label>Volumen de agua (m<sup>3</sup>)</label>
+                                            {{form.volumen_agua}}
+                                            <div class="text-muted pull-right">
+                                                <small>{{form.volumen_agua.help_text}}</small>
+                                            </div>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            {% endif %}
+                            {{ form.fecha_modifica|default_if_none:'' }}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <input name="usuario_modifica" type="hidden" value={{ user.id }}>
+                                            <a onclick="clicked();" class="btn btn-success">Guardar</a>
+                                            <a class="btn btn-danger" href="{% url 'listarRiegosDiarioPentientes' %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+        {{ form.media }}
+
+        <script src="{% static "bootstrapdatetime/js/bootstrap-datepicker.min.js" %}"></script>
+        <script src="{% static "bootstrapdatetime/js/locales/bootstrap-datepicker.es.min.js" %}"></script>
+
+
+
+    <script>
+        function clicked() {
+            var dotacionIni =  $("input[id='id_dotacion_inicial']").val();
+            var dotacionfin =  $("input[id='id_dotacion_final']").val();
+            var frm = $('#form');
+            if (dotacionfin != dotacionIni){
+                if (confirm('Hay diferencia entre la dotacion inicial y la final, desesa continuar con el registro de terminación?')) {
+                    
+                    frm.submit();
+                }
+                else {
+                    return false;
+                }
+            }
+            else
+            {
+                frm.submit();
+            }
+        }
+
+        $(function () {
+            $('#datetimepickerHoraInicio').datetimepicker({
+                pickTime: true,
+                pickDate: false,
+                format: 'HH:00',
+                language :'es' /*remove this line if you want to use time as well */
+            });
+        });
+
+        $(function () {
+            $('#datetimepickerHoraFinal').datetimepicker({
+                pickTime: true,
+                pickDate: false,
+                format: 'HH:00',
+                language :'es' /*remove this line if you want to use time as well */
+            });
+        });
+
+        $(function () {
+            $('#datetimepickerRiegoInicio').datepicker({
+                language :'es',
+                endDate : '+0d',
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+
+         $(function () {
+            $('#datetimepickerRiegoFin').datepicker({
+                language :'es',
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+
+        $('#id_dotacion_final').change(function(event){
+            CalcularVolumen();
+            CalcularDuracion();
+        });
+
+        $('#datetimepickerRiegoInicio').change(function(event){
+            CalcularVolumen();
+            CalcularDuracion();
+        });
+
+        $('#datetimepickerRiegoFin').change(function(event){
+            CalcularVolumen();
+            CalcularDuracion();
+        });
+
+        $('#datetimepickerHoraInicio').change(function(event){
+            CalcularVolumen();
+            CalcularDuracion();
+        });
+
+         $('#datetimepickerHoraFinal').change(function(event){
+            CalcularVolumen();
+            CalcularDuracion();
+        });
+
+
+        function CalcularVolumen (){
+
+            var resultado = 0;
+            resultado2 = Number($("input[id='id_dotacion_final']").val());
+            resultado1 = Number($("input[id='id_duracion_riego']").val());
+
+            var resultadoF = (resultado1 * resultado2 * 3.6).toFixed(2)
+
+            $('#id_volumen_agua').val(resultadoF);
+        };
+
+        function CalcularDuracion (){
+
+            var fechaini =  $("input[id='datetimepickerRiegoInicio']").val();
+            var fechafin =  $("input[id='datetimepickerRiegoFin']").val();
+            var horaini = $("input[id='datetimepickerHoraInicio']").val();
+            var horafin = $("input[id='datetimepickerHoraFinal']").val();
+            var fechainiC = fechaini.concat(", ",horaini);
+            var fechafinC = fechafin.concat(", ",horafin);
+            
+            var duracion = moment.duration(moment(fechafinC , "YYYY-MM-DD HH:mm").diff(moment(fechainiC,"YYYY-MM-DD HH:mm")));
+
+            var tiempo = duracion.asHours().toFixed(2);
+
+            $('#id_duracion_riego').val(tiempo);
+        };
+
+    </script>
+{% endblock content %}
+

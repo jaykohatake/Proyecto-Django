@@ -1,0 +1,95 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Registro inspector - zonas</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                            {{inspector}}
+                         <a href="{% url 'listarInspectorZona' id_inspector %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method="post">
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Error!</strong> {{ message }}.
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.id_usuario.errors %}has-error{% endif %}">
+                                            <input   name="id_usuario" type="hidden" value={{ id_inspector }}>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.codigo_zona.errors %}has-error{% endif %}">
+                                            <label>Zona</label>
+                                            {{form.codigo_zona}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            {{ form.fecha_modifica|default_if_none:'' }}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <input name="usuario_registro" type="hidden" value={{ user.id }}>
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <a class="btn btn-danger" href="{% url 'listarInspectorZona' id_inspector %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+{% endblock content %}

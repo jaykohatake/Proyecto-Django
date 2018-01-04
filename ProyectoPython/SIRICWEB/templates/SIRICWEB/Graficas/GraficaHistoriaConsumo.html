@@ -1,0 +1,151 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% load l10n %}
+{% block content %}
+<div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Consumo de agua por cultivo (m<sup>3</sup>) </h1>
+                </div>
+        </div>
+        </br>
+        <!-- /.row -->
+         <div class="panel panel-info">
+            <div class="panel-heading">
+                <i class="fa fa-bar-chart-o fa-fw"></i> 
+                <a href="{% url 'index' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <form role="form" method="post">
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Error!</strong> {{ message }}.
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <div class="form-group {% if form.vigencia.errors %}has-error{% endif %}">
+                                            <label>Año</label>
+                                            {{form.anno}}
+                                        </div>
+                                </div>
+                                 <div class="col-md-4">
+                                        <div class="form-group {% if form.semestre.errors %}has-error{% endif %}">
+                                            <label>Semestre</label>
+                                            {{form.sem}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Consultar</button>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+
+                        {% if result|length > 0 %}
+                            <div id="morris-bar-chart2"></div>
+                        {% endif %}
+
+                        {% if result|length == 0 %}
+                            No se encontraron resultados
+                        {% endif %}
+
+                    </div>
+                    <!-- /.col-lg-8 (nested) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /#page-wrapper -->
+
+     <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/raphael/raphael.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/morrisjs/morris.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+        <script type="text/javascript">
+            function parseSVG(s) {
+                    var div= document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+                    div.innerHTML= '<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+                    var frag= document.createDocumentFragment();
+                    while (div.firstChild.firstChild)
+                        frag.appendChild(div.firstChild.firstChild);
+                    return frag;
+                }
+                    $(function() {
+                         Morris.Bar({
+                            element: 'morris-bar-chart2',
+                            data: [
+                            {% for item in result %}
+                                { y:'{{item.anno}}-{{item.sem}}', Consumo: {{ item.Consumo|unlocalize }}, tipo:'{{item.id_cultivo.nombre_cultivo}}'}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                            ],
+                           
+                                xkey: 'y',
+                                ykeys: ['Consumo'],
+                                stacked: true,
+                                labels: ['Total de Consumo (m<sup>3</sup>)'],
+                                hideHover: 'auto',
+                                resize: true
+                            });
+
+            var tipo =  [
+                            {% for item in result %}
+                                { y:'{{item.anno}}-{{item.sem}}', Consumo: {{ item.Consumo|unlocalize }}, tipo:'{{item.id_cultivo.nombre_cultivo}}'}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        ];
+
+            var items = $("#morris-bar-chart2").find( "svg" ).find("rect");
+            $.each(items,function(index,v){
+                var value = tipo[index].tipo;
+                console.log(tipo);
+                var newY = parseFloat( $(this).attr('y') - 20 );
+                var halfWidth = parseFloat( $(this).attr('width') / 2 );
+                var newX = parseFloat( $(this).attr('x') ) +  halfWidth;
+                var output = '<text style="text-anchor: middle; font: 12px sans-serif;" x="'+newX+'" y="'+newY+'" text-anchor="middle" font="10px &quot;Arial&quot;" stroke="none" fill="#000000" font-size="12px" font-family="sans-serif" font-weight="normal" transform="matrix(1,0,0,1,0,6.875)"><tspan dy="3.75">'+value+'</tspan></text>';
+                $("#morris-bar-chart2").find( "svg" ).append(parseSVG(output));
+            });
+
+                });
+        </script>
+        <!-- /.row -->
+        
+{% endblock content %}

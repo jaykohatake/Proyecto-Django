@@ -1,0 +1,242 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% block head_meta_charset %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    {% endblock head_meta_charset %}
+    {% block head_meta_viewport %}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% endblock head_meta_viewport %}
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %} SiricWEB - Asorut {% endblock %}</title>
+
+    {% block head_css %}
+        <!-- Bootstrap Core CSS -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" >
+
+        <!-- MetisMenu CSS -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.css" %}" rel="stylesheet" type="text/css">
+
+        <!-- Custom CSS -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/dist/css/sb-admin-2.min.css" %}" rel="stylesheet" type="text/css">
+
+         <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/morrisjs/morris.css" %}" rel="stylesheet" type="text/css">
+
+         <!-- DataTables CSS -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-plugins/dataTables.bootstrap.css" %}" rel="stylesheet">
+
+        <!-- DataTables Responsive CSS -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/datatables-responsive/dataTables.responsive.css" %}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="{% static "SIRICWEB/publigns/startbootstrap/vendor/font-awesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css">
+
+        <link href="{% static "bootstrapdatetime/css/bootstrap-datetimepicker.min.css" %}" rel="stylesheet" type="text/css">
+
+        <link href="{% static "bootstrapdatetime/css/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" type="image/x-icon" href="{% static "SIRICWEB\publigns\startbootstrap\imagenes\logo.png" %}">
+
+        {{ form.media }}
+
+    {% endblock head_css %}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="wrapper">
+     {% block nav-style %}
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{% url 'index' %}">SiricWEB - Asorut</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                 <li>
+                     {% if user.is_authenticated %}
+                          <span class="m-r-sm text-muted welcome-message">Bienvenido, {{ user.first_name }} {{ user.last_name }}.</span>
+                     {% endif %}
+                </li>
+                <!-- /.dropdown -->
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> {% if predioRiegoPendiente.usuario_registro_id == user.id %} {{predioRiegoPendiente.count}} {% endif %} <i class="fa fa-caret-down"></i>
+                    </a>
+                    {% for predioRiegoPendiente in predioRiegoPendiente %}
+                        {% if predioRiegoPendiente.usuario_registro_id == user.id %}
+                    <ul class="dropdown-menu dropdown-alerts">
+                        
+                        <li>
+                            <a href="{% url 'modificarRegistroRiego' predioRiegoPendiente.id  %}">
+                                <div>
+                                    <i class="fa fa-comment fa-fw"></i>Riego pendiente
+                                    <span class="pull-right text-muted small">El predio {{predioRiegoPendiente.codigo_predio_id}}, tiene un riego pendiente por finalizar  </span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    {% endif %}
+                        {%endfor%}
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="{% url 'datosUsuario' user.id %}"><i class="fa fa-user fa-fw"></i> Mis datos</a>
+                        </li>
+                        <li><a href="{% url 'cambiarContrasenaUsuario' user.id %}"><i class="fa fa-key fa-fw"></i> Cambiar contraseña</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out fa-fw"></i> Cerrar sesión</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <br/>
+                        <br/>
+                        <br/>
+                        <li>
+                            <a href="{% url 'index' %}"><!--<i class="fa fa-dashboard fa-fw"></i>--> Inicio</a>
+                        </li>
+                        <li>
+                            {% if user.profile.role == 1 %}
+                                <a href="#"><!--<i class="fa fa-puzzle-piece fa-fw"></i>--> Administración del sistema<span class="fa arrow"></span></a>
+                                 <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'usuariolistar' %}">Usuarios</a>
+                                    </li>
+                                </ul>
+                            {% endif %}
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            {% if user.profile.role == 1 %}
+                                <a href="#"><!--<i class="fa fa-folder-open"></i>--> Archivos maestro<span class="fa arrow"></span></a>
+                                 <ul class="nav nav-second-level">
+                                     <li>
+                                        <a href="{% url 'listarCanales' %}">Canales</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarInspector' %}">Inspectores de riego</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarCultivos' %}">Parámetros (atributos) de cultivos</a>
+                                    </li>
+                                     <li>
+                                        <a href="{% url 'listarMetodoRiego' %}">Metodos de riego</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarTipoCultivo' %}">Cultivos</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarTipoIdentificacion' %}">Tipos de identificación</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarTerceros' %}">Personas</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarPredios' %}">Registro General de Usuarios</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarZonas' %}">Zonas</a>
+                                    </li>
+                                </ul>
+                                {% endif %}
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            {% if user.profile.role == 1 or user.profile.role == 5 or user.profile.role == 6 %}
+                                <a href="#"><!--<i class="fa fa-database"></i>--> Registro de riegos<span class="fa arrow"></span></a>
+                                 <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'listarPrediosRiego' %}">Inicio de riegos (solicitudes)</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarRiegosDiarioPentientes' %}">Terminación de riegos</a>
+                                    </li>
+                                    
+                                </ul>
+                            <!-- /.nav-second-level -->
+                            {% endif %}
+                        </li>
+                        <li>
+                                <a href="#"><!--<i class="fa fa-file"></i>-->Consultas y Reportes <span class="fa arrow"></span></a>
+                                 <ul class="nav nav-second-level">
+                                    <li>
+                                        <a href="{% url 'graficaHistoriaConsumo' %}">Consumo de agua por cultivo (m<sup>3</sup>)</a>
+                                    </li>
+                                     <li>
+                                        <a href="{% url 'listarHistoriaPredio' %}">Historico predios</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'reporteDiarioDotacion' %}">Reporte diario de dotación</a>
+                                    </li>
+                                    <li>
+                                        <a href="{% url 'listarRiegosDiario' %}">Riegos finalizados</a>
+                                    </li>
+                                </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="{% url 'MapaVisor' %}"><!--<i class="fa fa-map fa-fw"></i>-->Ver mapa</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        {% endblock %}
+        <!-- Page Content -->
+        
+        {% block content %}
+        {% endblock content %}
+                       
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    {% block footer_javascript %}
+        <script type="text/javascript">
+            $(document).ready(function(){
+
+                function disableBack() {window.history.forward()}
+
+                window.onload = disableBack();
+                window.onpageshow = function(event){ if (event.persisted) disableBack()}
+            });
+        </script>    
+    {% endblock footer_javascript %}
+
+</body>
+
+</html>

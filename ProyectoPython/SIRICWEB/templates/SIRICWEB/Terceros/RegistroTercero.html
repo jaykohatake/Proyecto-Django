@@ -1,0 +1,339 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Registro Persona</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Datos Persona
+                         <a href="{% url 'listarTerceros' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method="post">
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.tipo_identificacion.errors %}has-error{% endif %}">
+                                            <label>Tipo identificación</label>
+                                            {{form.tipo_identificacion}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div id="natural" style='display:none;'>
+                                <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.identificacion.errors %}has-error{% endif %}">
+                                            <label>Identificación</label>
+                                            {{form.identificacion}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.pirme_nombre.errors %}has-error{% endif %}">
+                                            <label>Primer nombre</label>
+                                            {{form.pirme_nombre}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.segundo_nombre.errors %}has-error{% endif %}">
+                                            <label>Segundo nombre</label>
+                                            {{form.segundo_nombre}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.primer_apellido.errors %}has-error{% endif %}">
+                                            <label>Primer apellido</label>
+                                            {{form.primer_apellido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.segundo_apellido.errors %}has-error{% endif %}">
+                                            <label>Segundo apellido</label>
+                                            {{form.segundo_apellido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.telefono.errors %}has-error{% endif %}">
+                                            <label>Teléfono</label>
+                                            {{form.telefono}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.celular.errors %}has-error{% endif %}">
+                                            <label>Celular</label>
+                                            {{form.celular}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.correo.errors %}has-error{% endif %}">
+                                            <label>Correo</label>
+                                            {{form.correo}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.direccion.errors %}has-error{% endif %}">
+                                            <label>Dirección</label>
+                                            {{form.direccion}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            </div>
+                            
+                            <div id="juridica" style='display:none;'>
+                                <h3 class="page-header">Información razón social</h3>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.identificacion.errors %}has-error{% endif %}">
+                                                <label>Identificación</label>
+                                                {{form.identificacion}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.razon_social.errors %}has-error{% endif %}">
+                                                <label>Razón social</label>
+                                                {{form.razon_social}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.telefono_razon_social.errors %}has-error{% endif %}">
+                                                <label>Teléfono</label>
+                                                {{form.telefono_razon_social}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.celular_razon_social.errors %}has-error{% endif %}">
+                                                <label>Celular</label>
+                                                {{form.celular_razon_social}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.correo_razon_social.errors %}has-error{% endif %}">
+                                                <label>Correo</label>
+                                                {{form.correo_razon_social}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                 <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.direccion_razon_social.errors %}has-error{% endif %}">
+                                                <label>Dirección</label>
+                                                {{form.direccion_razon_social}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <h3 class="page-header">Información representante legal</h3>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.identificacion_representante.errors %}has-error{% endif %}">
+                                                <label>Tipo identificación representante legal</label>
+                                                {{form.tipo_identificacion_representante}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                            <div class="form-group {% if form.identificacion_representante.errors %}has-error{% endif %}">
+                                                <label>Identificación representante legal</label>
+                                                {{form.identificacion_representante}}
+                                            </div>
+                                    </div>
+                                <!-- /.col-lg-6 (nested) -->
+                                </div>
+                                <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.pirme_nombre.errors %}has-error{% endif %}">
+                                            <label>Primer nombre</label>
+                                            {{form.pirme_nombre}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.segundo_nombre.errors %}has-error{% endif %}">
+                                            <label>Segundo nombre</label>
+                                            {{form.segundo_nombre}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.primer_apellido.errors %}has-error{% endif %}">
+                                            <label>Primer apellido</label>
+                                            {{form.primer_apellido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.segundo_apellido.errors %}has-error{% endif %}">
+                                            <label>Segundo apellido</label>
+                                            {{form.segundo_apellido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.telefono.errors %}has-error{% endif %}">
+                                            <label>Teléfono</label>
+                                            {{form.telefono}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.celular.errors %}has-error{% endif %}">
+                                            <label>Celular</label>
+                                            {{form.celular}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.correo.errors %}has-error{% endif %}">
+                                            <label>Correo</label>
+                                            {{form.correo}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.direccion.errors %}has-error{% endif %}">
+                                            <label>Dirección</label>
+                                            {{form.direccion}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.activo.errors %}has-error{% endif %}">
+                                            <label>Activo</label>
+                                            {{form.activo}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <a class="btn btn-danger" href="{% url 'listarTerceros' %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+         <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('[name="tipo_identificacion"]').change(function () {
+                var end = this.value;
+
+                if (end == '8') {
+
+                    document.getElementById('juridica').style.display='block'; // muestra el div 
+                    document.getElementById('natural').style.display='none'; // oculta el div
+                }
+                else {
+
+                    document.getElementById('natural').style.display='block'; // muestra el div 
+                    document.getElementById('juridica').style.display='none'; // oculta el div
+                }
+            })
+        });
+        </script>
+
+{% endblock content %}

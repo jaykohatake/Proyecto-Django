@@ -1,0 +1,168 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Registro cultivos</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Datos cultivo
+                         <a href="{% url 'listarCultivos' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method="post">
+                            {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.id_cultivo.errors %}has-error{% endif %}">
+                                            <label>Tipo cultivo</label>
+                                            {{form.id_cultivo}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.consumo_aguaF1.errors %}has-error{% endif %}">
+                                            <label>Consumo de agua fase 1</label>
+                                            {{form.consumo_aguaF1}}
+                                            {{form.consumo_aguaF1.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.consumo_aguaF2.errors %}has-error{% endif %}">
+                                            <label>Consumo de agua fase 2</label>
+                                            {{form.consumo_aguaF2}}
+                                            {{form.consumo_aguaF2.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.consumo_aguaF3.errors %}has-error{% endif %}">
+                                            <label>Consumo de agua fase 3</label>
+                                            {{form.consumo_aguaF3}}
+                                            {{form.consumo_aguaF3.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.consumo_aguaF4.errors %}has-error{% endif %}">
+                                            <label>Consumo de agua fase 4</label>
+                                            {{form.consumo_aguaF4}}
+                                            {{form.consumo_aguaF4.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.longitud_raizF1.errors %}has-error{% endif %}">
+                                            <label>Logitud de raiz 1</label>
+                                            {{form.longitud_raizF1}}
+                                            {{form.longitud_raizF1.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.longitud_raizF2.errors %}has-error{% endif %}">
+                                            <label>Logitud de raiz 2</label>
+                                            {{form.longitud_raizF2}}
+                                            {{form.longitud_raizF2.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.longitud_raizF3.errors %}has-error{% endif %}">
+                                            <label>Logitud de raiz 3</label>
+                                            {{form.longitud_raizF3}}
+                                            {{form.longitud_raizF3.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.longitud_raizF4.errors %}has-error{% endif %}">
+                                            <label>Logitud de raiz 4</label>
+                                            {{form.longitud_raizF4}}
+                                            {{form.longitud_raizF4.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.duracion.errors %}has-error{% endif %}">
+                                            <label>Duración</label>
+                                            {{form.duracion}}
+                                            {{form.duracion.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            {{ form.fecha_modifica|default_if_none:'' }}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <input name="usuario_registro" type="hidden" value={{ user.id }}>
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <a class="btn btn-danger" href="{% url 'listarCultivos' %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+         <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+{% endblock content %}

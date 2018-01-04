@@ -1,0 +1,144 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Modificar canal</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Datos del canal
+                        <a href="{% url 'listarCanales' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" action="" method="post">
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.tipo_canal.errors %}has-error{% endif %}">
+                                            <label>Tipo</label>
+                                            {{form.tipo_canal}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                           <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.nombre_canal.errors %}has-error{% endif %}">
+                                            <label>Identificación canal</label>
+                                            {{form.nombre_canal}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.logitud.errors %}has-error{% endif %}">
+                                            <label>Longitud</label>
+                                            {{form.logitud}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                             <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.capacidad.errors %}has-error{% endif %}">
+                                            <label>Capacidad (L/s)</label>
+                                            {{form.capacidad}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.revestido.errors %}has-error{% endif %}">
+                                            <label>Revestido</label>
+                                            {{form.revestido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.logitudrevestido.errors %}has-error{% endif %}">
+                                            <label>Logitud revestido (m</label>
+                                            {{form.logitudrevestido}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <a class="btn btn-danger" href="{% url 'listarCanales' %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+         <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+     <script type="text/javascript">
+$(document).ready(function () {
+    $('[name="tipo_canal"]').change(function () {
+        var end = this.value;
+
+        if (end == '2') {
+
+            $('[name="revestido"]').prop( "disabled", true );
+            $('[name="revestido"]').prop( "checked", false );
+            $('[name="logitudrevestido"]').prop( "disabled", true );
+            $('[name="logitudrevestido"]').val("");
+
+           
+        }
+        else {
+
+           $('[name="revestido"]').prop( "disabled", false );
+            $('[name="logitudrevestido"]').prop( "disabled", false );
+        }
+    })
+});
+</script>
+
+{% endblock content %}

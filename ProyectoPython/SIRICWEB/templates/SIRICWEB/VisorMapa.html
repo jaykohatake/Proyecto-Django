@@ -1,0 +1,94 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load leaflet_tags %}
+{% load staticfiles %}
+{% block content %}
+ <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Mapa</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Mapa Distrito Riego
+                         <a href="{% url 'index' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method="post" content='text/html; charset=UTF-8'>
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Error!</strong> {{ message }}.
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                        <div class="form-group {% if form.geom.errors %}has-error{% endif %}">
+                                            <style media="screen">
+            #poland { width:100%; height: 600px }
+        </style>
+      {% leaflet_js %}
+      {% leaflet_css %}
+      <script src="{% static "leaflet-ajax/dist/leaflet.ajax.min.js" %}"></script>
+      <script src="{% static "spin.js/spin.min.js" %}"></script>
+      <script src="{% static "leaflet-spin/leaflet.spin.js" %}"></script>
+                                            <script type="text/javascript">
+         function map_init_basic (map, options) {
+               var geojsonVoivodeshipsLayer = new L.GeoJSON.AJAX("{% url 'points' %}", {
+                   onEachFeature:function(feature, layer) {
+                       layer.bindPopup('Propietario: '+ feature.properties.prop.toString() + '<br>'+ 'Código Predio: '+feature.properties.code_predi.toString()+ '<br>'+ 'Área: '+feature.properties.area_ha.toString()+ ' ha'+ '<br>'+ 'Zona: '+feature.properties.zona.toString());
+                   }
+               });
+               geojsonVoivodeshipsLayer.addTo(map);
+           }
+      </script>
+      {% leaflet_map "poland" callback="window.map_init_basic" %}
+                                        </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+     <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+        <!-- /.row -->
+        
+{% endblock content %}
+

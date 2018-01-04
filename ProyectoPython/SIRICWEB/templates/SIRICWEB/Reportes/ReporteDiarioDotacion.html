@@ -1,0 +1,127 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% load l10n %}
+{% block content %}
+<div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Dotación (L/s) inicial</h1>
+                </div>
+        </div>
+        </br>
+        <!-- /.row -->
+         <div class="panel panel-info">
+            <div class="panel-heading">
+                <i class="fa fa-file fa-fw"></i> 
+                <a href="{% url 'index' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <form role="form" method="post">
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert {{ message.tags }} alert-dismissable fade in">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Error!</strong> {{ message }}.
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-4">
+                                        <div class="form-group {% if form.fecha_inicio.errors %}has-error{% endif %}">
+                                            <label>Fecha inicial</label>
+                                            {{form.fecha_inicio}}
+                                        </div>
+                                </div>
+                                 <div class="col-md-4">
+                                        <div class="form-group {% if form.semestre.errors %}has-error{% endif %}">
+                                            <label>Fecha final</label>
+                                            {{form.fecha_final}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-success">Consultar</button>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+                        </form>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12">
+                        {% if url|length > 0 %}
+                            <iframe height="500px" width="100%" src={{url}}></iframe>
+                        {% endif %}
+                    </div>
+                    <!-- /.col-lg-8 (nested) -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /#page-wrapper -->
+
+     <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Morris Charts JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/raphael/raphael.min.js" %}"></script>
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/morrisjs/morris.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+         {{ form.media }}
+
+        <script src="{% static "bootstrapdatetime/js/bootstrap-datepicker.min.js" %}"></script>
+        <script src="{% static "bootstrapdatetime/js/locales/bootstrap-datepicker.es.min.js" %}"></script>
+
+        <script type="text/javascript">
+
+        $(function () {
+            $('#datetimepickerRiegoInicio').datepicker({
+                language :'es',
+                endDate : '+0d',
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+
+        $(function () {
+            $('#datetimepickerRiegoFin').datepicker({
+                language :'es',
+                endDate : '+0d',
+                todayHighlight: true,
+                format: 'yyyy-mm-dd',
+                autoclose: true
+            });
+        });
+        </script>
+        <!-- /.row -->
+        
+{% endblock content %}

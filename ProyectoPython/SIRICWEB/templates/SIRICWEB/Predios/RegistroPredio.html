@@ -1,0 +1,183 @@
+{% extends 'siricweb/Base/base.html' %}
+{% load staticfiles %}
+{% block content %}
+    <div id="page-wrapper">
+        </br>
+        <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header">Registro predios</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+        </div>
+            <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Datos predio
+                         <a href="{% url 'listarPredios' %}" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></a>
+                    </div>
+                    <div class="panel-body">
+                        <form role="form" method="post" enctype="multipart/form-data">
+                             {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                         <div class="alert alert-danger alert-dismissable fade in" role="alert">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Error!</strong> campo {{field.label}} {{ field.errors }} 
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.codigo_predio.errors %}has-error{% endif %}">
+                                            <label>Código</label>
+                                            {{form.codigo_predio}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.cedula_catastral.errors %}has-error{% endif %}">
+                                            <label>Cédula catastral</label>
+                                            {{form.cedula_catastral}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.matricula_inmobiliaria.errors %}has-error{% endif %}">
+                                            <label>Matrícula inmobiliaria</label>
+                                            {{form.matricula_inmobiliaria}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.area_total.errors %}has-error{% endif %}">
+                                            <label>Área Total (ha)</label>
+                                            {{form.area_total}}
+                                            {{form.area_total.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.area_beneficiada.errors %}has-error{% endif %}">
+                                            <label>Área Beneficiada (ha)</label>
+                                            {{form.area_beneficiada}}
+                                            {{form.area_beneficiada.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.area_cultivada.errors %}has-error{% endif %}">
+                                            <label>Área Cultivada (ha)</label>
+                                            {{form.area_cultivada}}
+                                            {{form.area_cultivada.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.latitud.errors %}has-error{% endif %}">
+                                            <label>Latitud</label>
+                                            {{form.latitud}}
+                                            {{form.latitud.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.logitud.errors %}has-error{% endif %}">
+                                            <label>Logitud</label>
+                                            {{form.logitud}}
+                                            {{form.logitud.help_text}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.nombre_predio.errors %}has-error{% endif %}">
+                                            <label>Nombre</label>
+                                            {{form.nombre_predio}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group {% if form.ubicacion_predio.errors %}has-error{% endif %}">
+                                            <label>Ubicación</label>
+                                            {{form.ubicacion_predio}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group ">
+                                            <label>PDF Escritura</label>
+                                            {{form.ruta_escritura}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <label>PDF Matrícula Inmobiliaria</label>
+                                            {{form.ruta_matricula_inmobiliaria}}
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            {{ form.fecha_modifica|default_if_none:'' }}
+                            <div class="row">
+                                <div class="col-md-8">
+                                        <div class="form-group">
+                                            <input name="usuario_registro" type="hidden" value={{ user.id }}>
+                                            <button type="submit" class="btn btn-success">Guardar</button>
+                                            <a class="btn btn-danger" href="{% url 'listarPredios' %}">Cancelar</a>
+                                        </div>
+                                </div>
+                                <!-- /.col-lg-6 (nested) -->
+                            </div>
+                            <!-- /.row (nested) -->
+
+                        </form>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!-- jQuery -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/jquery/jquery.min.js" %}"> </script>
+
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/bootstrap/js/bootstrap.min.js" %}"> </script>
+
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="{% static "SIRICWEB/publigns/startbootstrap/vendor/metisMenu/metisMenu.min.js" %}"></script>
+
+        <!-- Custom Theme JavaScript -->
+         <script src="{% static "SIRICWEB/publigns/startbootstrap/dist/js/sb-admin-2.min.js" %}"></script>
+
+{% endblock content %}
